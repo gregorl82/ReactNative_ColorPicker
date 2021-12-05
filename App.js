@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import {
   Button,
   KeyboardAvoidingView,
@@ -10,33 +10,50 @@ import {
 } from 'react-native';
 
 export default function App() {
-  // convert to useReducer
-  const [red, setRed] = useState('00');
-  const [blue, setBlue] = useState('00');
-  const [green, setGreen] = useState('00');
-  const [color, setColor] = useState('#000000');
+  const initialState = {
+    red: '00',
+    green: '00',
+    blue: '00',
+    color: '#000000',
+  };
 
-  // add validation to prevent non hex input
+  const setColorReducer = (state, action) => {
+    switch (action.type) {
+      case 'setRed':
+        return { ...state, red: action.payload };
+      case 'setGreen':
+        return { ...state, green: action.payload };
+      case 'setBlue':
+        return { ...state, blue: action.payload };
+      case 'setColor':
+        return { ...state, color: action.payload };
+      default:
+        throw new Error();
+    }
+  };
+
+  const [state, dispatch] = useReducer(setColorReducer, initialState);
+
   const handleRedChange = (text) => {
-    setRed(text);
+    dispatch({ type: 'setRed', payload: text });
   };
   const handleBlueChange = (text) => {
-    setBlue(text);
+    dispatch({ type: 'setBlue', payload: text });
   };
   const handleGreenChange = (text) => {
-    setGreen(text);
+    dispatch({ type: 'setGreen', payload: text });
   };
 
   handleDisplay = () => {
-    const color = '#' + red + blue + green;
-    setColor(color);
+    const color = '#' + state.red + state.green + state.blue;
+    dispatch({ type: 'setColor', payload: color });
   };
 
   handleReset = () => {
-    setRed('00');
-    setBlue('00');
-    setGreen('00');
-    setColor('#000000');
+    dispatch({ type: 'setRed', payload: '00' });
+    dispatch({ type: 'setGreen', payload: '00' });
+    dispatch({ type: 'setBlue', payload: '00' });
+    dispatch({ type: 'setColor', payload: '#000000' });
   };
 
   return (
@@ -49,14 +66,14 @@ export default function App() {
       <View>
         <View
           style={{
-            backgroundColor: color,
+            backgroundColor: state.color,
             height: 200,
             width: 300,
             borderColor: 'black',
             borderWidth: 1,
           }}
         ></View>
-        <Text>Hex code: {color}</Text>
+        <Text>Hex code: {state.color}</Text>
       </View>
 
       <View>
@@ -65,17 +82,32 @@ export default function App() {
             flexDirection: 'row',
           }}
         >
-          <View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             <Text>Red:</Text>
-            <TextInput value={red} onChangeText={handleRedChange} />
+            <TextInput value={state.red} onChangeText={handleRedChange} />
           </View>
-          <View>
-            <Text>Blue:</Text>
-            <TextInput value={blue} onChangeText={handleBlueChange} />
-          </View>
-          <View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             <Text>Green:</Text>
-            <TextInput value={green} onChangeText={handleGreenChange} />
+            <TextInput value={state.green} onChangeText={handleGreenChange} />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Text>Blue:</Text>
+            <TextInput value={state.blue} onChangeText={handleBlueChange} />
           </View>
         </View>
 
