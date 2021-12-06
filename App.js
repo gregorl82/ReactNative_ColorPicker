@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import {
   Button,
   KeyboardAvoidingView,
@@ -27,6 +27,8 @@ export default function App() {
         return { ...state, blue: action.payload };
       case 'setColor':
         return { ...state, color: action.payload };
+      case 'resetColors':
+        return initialState;
       default:
         throw new Error();
     }
@@ -34,6 +36,7 @@ export default function App() {
 
   const [state, dispatch] = useReducer(setColorReducer, initialState);
 
+  // add input validation
   const handleRedChange = (text) => {
     dispatch({ type: 'setRed', payload: text });
   };
@@ -50,10 +53,7 @@ export default function App() {
   };
 
   handleReset = () => {
-    dispatch({ type: 'setRed', payload: '00' });
-    dispatch({ type: 'setGreen', payload: '00' });
-    dispatch({ type: 'setBlue', payload: '00' });
-    dispatch({ type: 'setColor', payload: '#000000' });
+    dispatch({ type: 'resetColors' });
   };
 
   return (
