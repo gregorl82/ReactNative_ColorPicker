@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useReducer } from 'react';
 import {
   Button,
@@ -71,41 +70,23 @@ export default function App() {
             width: 300,
             borderColor: 'black',
             borderWidth: 1,
+            alignSelf: 'center',
           }}
         ></View>
         <Text>Hex code: {state.color}</Text>
       </View>
 
       <View>
-        <View
-          style={{
-            flexDirection: 'row',
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
+        <View style={styles.inputsContainer}>
+          <View style={styles.inputs}>
             <Text>Red:</Text>
             <TextInput value={state.red} onChangeText={handleRedChange} />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
+          <View style={styles.inputs}>
             <Text>Green:</Text>
             <TextInput value={state.green} onChangeText={handleGreenChange} />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
+          <View style={styles.inputs}>
             <Text>Blue:</Text>
             <TextInput value={state.blue} onChangeText={handleBlueChange} />
           </View>
@@ -114,8 +95,6 @@ export default function App() {
         <Button title={'Display'} onPress={handleDisplay} />
         <Button title={'Reset'} onPress={handleReset} />
       </View>
-
-      <StatusBar style="auto" />
     </KeyboardAvoidingView>
   );
 }
@@ -123,9 +102,17 @@ export default function App() {
 // Update styling
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    padding: 16,
+  },
+  inputsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  inputs: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });
